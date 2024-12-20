@@ -1,0 +1,114 @@
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f9;
+margin: 0;
+padding: 0;
+}
+.container {
+max-width: 400px;
+margin: 50px auto;
+padding: 20px;
+background-color: white;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+justify-content: center;
+}
+h2 {
+text-align: center;
+color: #333;
+}
+label {
+font-size: 14px;
+margin-bottom: 5px;
+display: block;
+color: #555;
+}
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+width: 95%;
+padding: 10px;
+margin: 10px 0px 20px;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
+button {
+width: 100%;
+padding: 12px;
+background-color: #f26123;
+border: none;
+color: white;
+font-size: 16px;
+border-radius: 4px;
+cursor: pointer;
+}
+button:hover {
+background-color: #c9511d;
+}
+p {
+text-align: center;
+color: #666;
+}
+.desc p {
+  text-align: left;
+  color: #666;
+}
+li {
+  color: #666;
+}
+a {
+    text-align: center;
+    padding: 8px 8px;
+    text-decoration: none;
+    display: block;
+    color: #007bff;;
+}
+a:hover {
+    background-color: #e8e8e8;
+    color: #ec6f2c;
+}
+.card {
+  background-color: #fff4d9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+.card h3 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px; 
+  color: #333;
+}
+.card:hover {
+  cursor: pointer;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.card p {
+  font-size: 14px;
+  color: #555;
+}
+.card img {
+  margin: auto;
+  width: 100%;
+}
+._container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+/* Стили для карточек */
+#results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Отображение карточек в несколько колонок */
+  gap: 20px;
+  margin-top: 20px;
+}
+.pol {
+  display: contents;
+}

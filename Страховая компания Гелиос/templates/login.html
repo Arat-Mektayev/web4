@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Страховая Компания «Гелиос» - федеральная страховая компания с высоким уровнем надежности.</title>	
+	<link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../static/style_forms.css" rel="stylesheet">
+  <title>Вход в аккаунт</title>
+</head>
+<body>
+
+  <div class="container" id="login-form">
+    <h2>Вход в аккаунт</h2>
+    
+    <form action="/login" method="POST">
+      <div>
+        <label for="email">Электронная почта</label>
+        <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+      </div>
+      
+      <div>
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required placeholder="Введите ваш пароль">
+      </div>
+      
+      <div>
+        <button type="submit" id="submit">Войти</button>
+      </div>
+    </form>
+    
+    <p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
+  </div>
+  <script>
+		document.getElementById('submit').addEventListener('submit', async function(event) {
+  
+        // Получаем значения из полей формы
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        let isValid = true;
+  
+        // Проверка на валидность email
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+          document.getElementById('email-error').textContent = 'Пожалуйста, введите корректный email.';
+          isValid = false;
+        }
+  
+        // Проверка на валидность пароля
+        if (password.length < 6) {
+          document.getElementById('password-error').textContent = 'Пароль должен содержать минимум 6 символов.';
+          isValid = false;
+        }
+  
+        // Если форма валидна, отправить данные
+        if (isValid) {
+			data = {
+				email: email,
+				password: password,
+			};
+			fetch('/login', {
+				method: 'POST', // Метод запроса
+				headers: {
+					'Content-Type': 'application/json' // Указываем, что отправляем данные в формате JSON
+				},
+				body: JSON.stringify(data) // Преобразуем объект в строку JSON
+				})
+			.then(response => response.json())  // Преобразуем ответ сервера в JSON
+			.then(data => {
+				console.log('Ответ сервера:', data); // Обработка ответа сервера
+				alert(data.message);
+				sessionStorage.setItem("name", data.name);
+				if(data.status === 0){
+					setTimeout(() => {
+						// Выполняем редирект
+						window.location.href = '/login'; // Указываем URL для редиректа
+					}, 2000);
+				}
+			})
+			.catch(error => {
+				console.error('Ошибка при отправке данных:', error); // Обработка ошибок
+			});
+        }
+		});
+   </script>
+</body>
+</html>

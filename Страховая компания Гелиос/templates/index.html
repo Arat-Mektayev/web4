@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>Страховая Компания «Гелиос» - федеральная страховая компания с высоким уровнем надежности.</title>	
+	<link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
+	<link href="static/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-betstatic/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style>
+	iframe {
+    	width: 100%;
+    	height: 100%;
+    	border: none;
+	}
+	</style>
+</head>
+<body>
+	
+	<table class="color1" border="0" width="100%"  cellspacing="0" align="center">
+		<tr>
+		<td width="250px" align="center">
+		<a href="/">
+		<img padding="5px" src="../static/images/logo.svg" alt="Логотип">
+		</a>
+		</td>
+		<td align="center">
+			<table width="100%"><tr>
+				<td width="100%"><a href="?page=search">Поиск по сайту</a></td></td>
+			</tr></table>
+		</td>
+		<td width="250px">
+			<table class="color1" cellpadding="5"  width="100%">
+				<tr>
+					<td width="40%" align="center"><a id='auth' href="/login">Авторизация</a></td>
+				</tr>
+			</table>
+		</td>
+		</tr>
+	</table> 
+
+	<table class="color1" class="nav" border="0" width="100%" align="center" cellpadding="4px">
+		<tr>
+		<td align="center" width="64px"><a href="/">Главная </a></td>
+		<td align="center" width="64px"><a href="?page=products">Продукты</a></td>
+		<td align="center" width="64px"><a href="?page=contacts">Контакты</a></td>
+		<td align="center" width="64px"><a href="?page=about">О Компании</a></td>
+		</tr>
+	</table> 
+	<table border="0" width="100%" cellpadding="1"  align="center">
+		<tr>
+			<td class="content" width="150" cellpadding="1" valign="top" align="center">
+			</td>
+			<td>
+			    <div class="container">
+					<iframe src="/{{page}}">
+					</iframe>
+				</div>
+			</td>	
+			<td width="190" cellpadding="1" valign="top" align="center" rowspan=0>
+				
+				<a href="https://www.sberbank.ru">
+					<img src="static/images/banner1.jpg" alt="Баннер" width="150px">
+				</a>
+				<a href="https://alfabank.ru">
+					<img src="static/images/banner2.jpg" alt="Баннер" width="150px">
+				</a>
+				<a href="https://market.yandex.ru/">
+					<img src="static/images/banner3.jpg" alt="Баннер" width="150px">
+				</a>
+			</td>
+		</tr>
+	</table>
+	
+	<footer>
+		<a href="/feedback">Обратная связь</a><p>
+		<a href="?page=licenses">Лицензии</a><p>
+		<a href="static/docs/polit.pdf">Политика конфиденциальности</a><p>
+		© ООО Страховая Компания «Гелиос»
+	</footer>
+	<script>
+		auth = document.getElementById('auth');
+		//if (sessionStorage.getItem("name") !== ''){auth.innerText = "${sessionStorage.getItem("name")}\nВыйти"; console.log("LOGIN");}
+		//else {console.log("NOTLOGIN");};
+		
+		window.addEventListener('message', function(event) {
+		// Проверяем источник сообщения (должен быть из нашего iframe)
+		if (event.origin !== '127.0.0.1') {
+			const iframeData = event.data; // Получаем данные из сообщения
+			console.log('Данные из iframe:', iframeData, encodeURIComponent(iframeData));
+			window.location.href = "product?p="+encodeURIComponent(iframeData);
+		} else {
+			console.warn('Получено сообщение от недоверенного источника:', event.origin);
+		}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<link href="../static/style_forms.css" rel="stylesheet">
+<style>
+  /* Стили для карточек */
+  #results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Отображение карточек в несколько колонок */
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+</style>
+<div class="_container">
+  <h2 id="head">ТЕСТ</h2>
+
+  <div id="desc" class="desc"></div> <!-- Здесь будут выводиться результаты -->
+
+</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const p = decodeURIComponent(urlParams.get('p'));
+
+document.getElementById('head').textContent = p;
+
+if (p) {
+  // Делаем запрос на сервер
+  fetch(`/json_prod?p=${p}`)
+    .then(response => response.json())  // Преобразуем ответ в JSON
+    .then(data => {
+      console.log(data);  // Обрабатываем полученные данные
+
+      // Делаем второй запрос для страховых случаев
+      fetch(`/json_prod_cases?p_id=${data.id}`)
+        .then(casesResponse => casesResponse.json())  // Преобразуем ответ в JSON
+        .then(cases => {
+          console.log(cases);  // Логируем случаи
+
+          // Отображаем результаты
+          const desc = document.getElementById('desc');
+          desc.innerHTML = `
+            <img src="../static/images/${data.filename}" margin-left="auto" alt="${data.name}">
+            <p class="result-description">${data.desc}</p>
+            <p class="result-description">Страховые случаи:</p>
+            <ul type="circle">
+              ${cases.map(item => `<li>${item.name}</li>`).join('')}
+            </ul>
+            Стоимость: ${data.cost} рублей.
+          `;
+        })
+        .catch(error => {
+          console.error('Ошибка при загрузке данных для страховых случаев:', error);
+        });
+    })
+    .catch(error => {
+      console.error('Ошибка при загрузке данных:', error);
+    });
+} else {
+  console.error('p не найден в URL');
+}
+</script>
+  
+

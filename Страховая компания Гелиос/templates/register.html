@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Страховая Компания «Гелиос» - федеральная страховая компания с высоким уровнем надежности.</title>	
+	<link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../static/style_forms.css" rel="stylesheet">
+  <title>Регистрация</title>
+</head>
+<body>
+	<div class="container" id="registration-form">
+	<h2>Регистрация пользователя</h2>
+
+
+
+    <form method="POST" action="/register">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="phone">Номер телефона:</label>
+        <input type="text" id="phone" name="phone" pattern="\+7\d{10}" required>
+
+        <label for="email">Электронная почта:</label>
+        <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm_password">Подтверждение пароля:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+		
+		<input type="checkbox" id="privacyCheckbox" name="privacy" required>
+        Ознакомлен с <a class="pol" href="../static/docs/polit.pdf" target="_blank">Политикой конфиденциальности</a>
+		<label id="errors"></label>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+<script>
+	document.getElementById('registration-form').addEventListener('submit', function(event) {
+        // Получаем значения из полей формы
+		const phone = document.getElementById('phone').value;
+		
+        const name = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const agreed = document.getElementById('privacyCheckbox').value
+		
+		const errors = document.getElementById('errors')
+		errors.textContent = '';
+		
+        let isValid = true;
+  
+        // Проверка на валидность имени
+        if (name.trim() === '') {
+		  errors.textContent = 'Пожалуйста, введите ваше имя. \n'
+          isValid = false;
+		  console.log("1");
+        }
+  
+        // Проверка на валидность email
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+		  errors.textContent = 'Пожалуйста, введите корректный email. \n'
+          isValid = false;
+		  console.log("2");
+        } 
+        // Проверка на валидность пароля
+        if (password.length < 6) {
+		  errors.textContent = 'Пароль должен содержать минимум 6 символов. \n'
+          isValid = false;
+		  console.log("3");
+        }
+        // Проверка на совпадение паролей
+        if (password !== confirmPassword) {
+		  errors.textContent = 'Пароли не совпадают. \n'
+          isValid = false;
+		  console.log("4");
+        }
+        if (agreed === false) {
+		  errors.textContent = 'Пожалуйста, ознакомьтесь с политикой конфиденциальности. \n'
+          isValid = false;
+		  console.log("5");
+        }
+        // Если форма валидна, отправить данные
+        if (isValid) {			
+			console.log("000");
+			data = {
+				username: name,
+				phone: phone,
+				email: email,
+				password: password,
+			};
+			fetch('/register', {
+				method: 'POST', // Метод запроса
+				headers: {
+					'Content-Type': 'application/json' // Указываем, что отправляем данные в формате JSON
+				},
+				body: JSON.stringify(data) // Преобразуем объект в строку JSON
+				})
+			.then(response => response.json())
+			.then(data => {
+				//console.log('Ответ сервера:', data); // Обработка ответа сервера
+				//alert(data.message);
+				//if(data.status === 0){
+				//	setTimeout(() => {
+				//		// Выполняем редирект
+				//		window.location.href = '/login'; // Указываем URL для редиректа
+				//	}, 1);
+				//}
+			})
+			.catch(error => {
+				console.error('Ошибка при отправке данных:', error); // Обработка ошибок
+			});
+		}
+	});
+</script>
+
+</body>
+</html>

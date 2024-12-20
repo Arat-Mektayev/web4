@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<link href="../static/style_forms.css" rel="stylesheet">
+
+<div class="_container" id="registration-form">
+  <h2>Поиск</h2>
+  <input type="text" id="search" placeholder="Поиск...">
+  <div id="results"></div> <!-- Здесь будут выводиться результаты -->
+  <div id="results"></div>
+</div>
+
+<script>
+  // Функция для поиска
+	function search(index, query) {
+		const results = index.filter(item => 
+			item.name.toLowerCase().includes(query.toLowerCase()) || 
+			item.shortdesc.toLowerCase().includes(query.toLowerCase())
+		);
+		return results;
+	}
+  
+	// Обработчик ввода
+	document.getElementById('search').addEventListener('input', function() {
+		// Делаем запрос на сервер
+		fetch(`/json_prods?tag=0`)
+		.then(response => response.json())  // Преобразуем ответ в JSON
+		.then(data => {
+			console.log(data);  
+			// Обрабатываем полученные данные
+			const query = this.value;
+			const results = search(data,query);
+			
+			// Отображение результатов
+			const resultsContainer = document.getElementById('results');
+			resultsContainer.innerHTML = results.map(item =>
+			`
+			<div class="card" onclick="parent.postMessage('${item.name}', '*');" >
+				<img src="../static/images/${item.filename}">
+				<h3 class="result-name">${item.name}</h3>
+				<p class="result-description">${item.shortdesc}</p>
+			</div>
+			  ` 
+			).join('');
+		})
+		.catch(error => {
+		  console.error('Ошибка при загрузке данных:', error);
+		});
+	});
+</script>
+  
+

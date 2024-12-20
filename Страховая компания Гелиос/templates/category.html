@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<link href="../static/style_forms.css" rel="stylesheet">
+
+<br>
+<h1 align="center" id="title" onload="init()"> placeholder </h1>
+<div class="_container">
+  <div id="results"></div> <!-- Здесь будут выводиться результаты -->
+</div>
+<script>
+	const urlParams = new URLSearchParams(window.location.search);
+	const tag = urlParams.get('tag');
+	
+	if (tag) {
+		// Присваиваем значение тега в текстовое содержимое
+		document.getElementById("title").textContent = tag;
+
+		// Делаем запрос на сервер
+		fetch(`/json_prods?tag=${tag}`)
+		.then(response => response.json())  // Преобразуем ответ в JSON
+		.then(data => {
+			console.log(data);  // Обрабатываем полученные данные
+			// Отображение результатов
+			const resultsContainer = document.getElementById('results');
+			sessionStorage.setItem('name', name);
+			resultsContainer.innerHTML = data.map(item => 
+			`
+				<div class="card" onclick="parent.postMessage('${item.name}', '*');">
+				<img src="../static/images/${item.filename}">
+				<h3 class="result-name">${item.name}</h3>
+				<p class="result-description">${item.shortdesc}</p>
+				</div>
+			`
+			).join('');
+		})
+		.catch(error => {
+		  console.error('Ошибка при загрузке данных:', error);
+		});
+	} else {
+	  console.error('Tag не найден в URL');
+	}
+</script>
